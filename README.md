@@ -1,1 +1,3 @@
-# UVU_DAGV1400_Spring_2024
+# Welcom to my project.
+
+This is a test to see how read me works
