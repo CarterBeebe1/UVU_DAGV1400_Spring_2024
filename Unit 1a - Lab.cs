@@ -9,7 +9,7 @@ public class WheatMill
 	public static void Main()
 	{
 		int yardsOfWheat = 3486;		// Number of yards of wheat farmed.
-		double poundsPerYard = 0.137D;		// Pounds of wheat per yard.
+		double poundsPerYard = 0.137D;	// Pounds of wheat per yard.
 		int poundsPerPack = 4;			// Number of pounds in a package of wheat.
 		bool shipment = false;			// Indicates whether there are enough packages for shipment.
 		
