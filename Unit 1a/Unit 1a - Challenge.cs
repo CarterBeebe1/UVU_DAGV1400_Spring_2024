@@ -69,12 +69,12 @@ public class CastleBuilding
 			}
 			if (choice == 2)
 			{
-				Console.WriteLine("Built lumber mill and gained " + woodInc + " wood.");		// Write line indicating that a lumber mill is built.
+				Console.WriteLine("Built lumber mill and gained " + woodInc + " wood.");	// Write line indicating that a lumber mill is built.
 				woodAmt += Convert.ToInt32(woodInc); 											// Add wood increase to wood amount.
 			}
 			if (choice == 3)
 			{
-				Console.WriteLine("Built mineshaft and gained " + stoneInc + " stone.");    	// Write line indicating that a mineshaft is built.
+				Console.WriteLine("Built mineshaft and gained " + stoneInc + " stone.");    // Write line indicating that a mineshaft is built.
 				stoneAmt += Convert.ToInt32(stoneInc); 											// Add stone increase to stone amount.
 			}
 			if ((choice == 4) & (woodAmt >= 200 ) & (stoneAmt >= 300)) 							// Check if enough wood and stone are available to build a castle.
@@ -87,7 +87,7 @@ public class CastleBuilding
 			{
 				if (numError == false)
 				{
-					Console.WriteLine("Not enough material to build a castle.");// Tell user there is not enough material to build a castle.
+					Console.WriteLine("Not enough material to build a castle."); 		// Tell user there is not enough material to build a castle.
 				}
 			}
 
