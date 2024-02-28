@@ -8,8 +8,14 @@ public class Program
 		Console.WriteLine("Enter a positive integer:");
 		var input = Console.ReadLine();
 		
-		// Converts user input to an integer
-		int num = Convert.ToInt32(input);
+		// Try converting user input to int. Output "Invalid input" if user did not enter an integer
+		int num;
+		bool success = int.TryParse(input, out num);
+
+		if (success == false)
+		{
+		Console.WriteLine("Invalid input");
+		}
 		
 		// Adds a space
 		Console.WriteLine(" ");
