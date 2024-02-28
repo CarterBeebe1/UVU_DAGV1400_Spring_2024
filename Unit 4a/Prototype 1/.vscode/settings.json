@@ -51,5 +51,5 @@
         "temp/": true,
         "Temp/": true
     },
-    "dotnet.defaultSolution": "Prototype 1 - Driving Simulator.sln"
+    "dotnet.defaultSolution": "Prototype 1.sln"
 }
