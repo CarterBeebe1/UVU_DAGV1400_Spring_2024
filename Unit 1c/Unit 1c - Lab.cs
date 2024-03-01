@@ -1,34 +1,34 @@
-﻿using System;
+using System;
 					
 public class Program
 {
 	public static void Main()
 	{
-		// Asks user to enter a positive integer
-		Console.WriteLine("Enter a positive integer:");
-		var input = Console.ReadLine();
+		string[] foods = {"Food1", "Food2", "Food3"};
 		
-		// Try converting user input to int. Output "Invalid input" if user did not enter an integer
-		int num;
-		bool success = int.TryParse(input, out num);
+		Console.WriteLine("Enter your three favorite foods:");
+		
+		for(var i = 1; i <= 3; i++)
+		{
+			Console.Write(i + ": ");
+			foods[i-1] = Console.ReadLine();
+		}
 
-		if (success == false)
-		{
-		Console.WriteLine("Invalid input");
-		}
+		Console.WriteLine(foods);
+	}
+	
+	public static void FavoriteFoods()
+	{
+		string[] foods = {"Food1", "Food2", "Food3"};
 		
-		// Adds a space
-		Console.WriteLine(" ");
+		Console.WriteLine("Enter your three favorite foods:");
 		
-		// Nested for loop. The outside loop runs until i is greater than or equal to num
-		// The inside loop outputs i to the console i number of times
-		for (var i = 1; i <= num; i++)
+		for(var i = 1; i <= 3; i++)
 		{
-			for (var w = 1; w <= i; w++)
-			{
-				Console.Write(i);
-			}
-			Console.WriteLine("");
+			Console.Write(i + ": ");
+			foods[i-1] = Console.ReadLine();
 		}
+
+		Console.WriteLine(foods);
 	}
 }
