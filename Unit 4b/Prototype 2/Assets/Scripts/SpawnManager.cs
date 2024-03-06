@@ -24,6 +24,7 @@ public class SpawnManager : MonoBehaviour
 
     void SpawnRandomAnimal()
     {
+        //Spawns a random animal in a random location between negative and positive 20 on the X axis and forward 20 on the Z axis.
         int animalIndex = Random.Range(0, animalPrefabs.Length);
         Vector3 spawnpos = new Vector3(Random.Range(-spawnRangeX, spawnRangeX), 0, spawnPosZ);
         Instantiate(animalPrefabs[animalIndex], spawnpos, animalPrefabs[animalIndex].transform.rotation);
