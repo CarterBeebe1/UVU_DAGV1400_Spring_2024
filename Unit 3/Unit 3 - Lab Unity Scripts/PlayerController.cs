@@ -5,7 +5,7 @@ using UnityEngine;
 
 public class PlayerController : MonoBehaviour
 {
-    // Variable declaration
+    // Variables
     public float movementSpeed = 5f;
     public float jumpForce = 5f;
     private float gravity = 9.81f;
@@ -28,7 +28,7 @@ public class PlayerController : MonoBehaviour
         float horizontalInput = Input.GetAxis("Horizontal");
         float verticalInput = Input.GetAxis("Vertical");
 
-        // Move player at move speed based on vertical and horizontal input
+        // Move player at movementSeed based on vertical and horizontal input
         controller.Move(Vector3.forward * verticalInput * movementSpeed * Time.deltaTime);
         controller.Move(Vector3.right * horizontalInput * movementSpeed * Time.deltaTime);
 
@@ -50,7 +50,7 @@ public class PlayerController : MonoBehaviour
         moveDirection.y -= gravity * Time.deltaTime;
         controller.Move(moveDirection * Time.deltaTime);
 
-        // Reset moveDirection to zero if character is grounded
+        // Reset moveDirection to zero and grounded to true if character is grounded
         if (controller.isGrounded)
         {
             moveDirection.y = 0;
