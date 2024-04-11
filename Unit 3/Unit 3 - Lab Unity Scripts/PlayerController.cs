@@ -1,6 +1,8 @@
 using System.Collections;
 using System.Collections.Generic;
+using Unity.VisualScripting;
 using Unity.VisualScripting.FullSerializer;
+using UnityEditor;
 using UnityEngine;
 
 public class PlayerController : MonoBehaviour
@@ -19,6 +21,10 @@ public class PlayerController : MonoBehaviour
     void Start()
     {
         controller = GetComponent<CharacterController>();
+
+        // Set target fps and vsync
+        QualitySettings.vSyncCount = 1;
+        Application.targetFrameRate = 60;
     }
 
     // Update is called once per frame
@@ -28,9 +34,23 @@ public class PlayerController : MonoBehaviour
         float horizontalInput = Input.GetAxis("Horizontal");
         float verticalInput = Input.GetAxis("Vertical");
 
+        // Sprint when the left control Key is pressed
+        if (Input.GetKeyDown(KeyCode.LeftControl))
+        {
+            movementSpeed = movementSpeed * 1.8f;
+        }
+        if (Input.GetKeyUp(KeyCode.LeftControl))
+        {
+            movementSpeed = 5;
+        }
+
         // Move player at movementSeed based on vertical and horizontal input
-        controller.Move(Vector3.forward * verticalInput * movementSpeed * Time.deltaTime);
-        controller.Move(Vector3.right * horizontalInput * movementSpeed * Time.deltaTime);
+        controller.Move(transform.forward * verticalInput * movementSpeed * Time.deltaTime);
+        controller.Move(transform.right * horizontalInput * movementSpeed * Time.deltaTime);
+
+        // Rotate player with mouse movment
+        float h = 3.0f * Input.GetAxis("Mouse X");
+        transform.Rotate(0, h, 0);
 
         // Check if player is grounded and the jump key is pressed
         if (Input.GetButtonDown("Jump"))
@@ -44,6 +64,16 @@ public class PlayerController : MonoBehaviour
             moveDirection.y = jumpForce;
             isJumping = false;
             grounded = false;
+        }
+
+        // Crouch when the left shift key is pressed
+        if (Input.GetKeyDown(KeyCode.LeftShift))
+        {
+            controller.height = 1.2f;
+        }
+        if (Input.GetKeyUp(KeyCode.LeftShift))
+        {
+            controller.height = 2f;
         }
 
         // Apply gravity
