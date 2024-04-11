@@ -8,9 +8,9 @@ using UnityEngine;
 public class PlayerController : MonoBehaviour
 {
     // Variables
-    public float movementSpeed = 1f;
-    public float jumpForce = 5f;
-    private float gravity = 9.81f;
+    [SerializeField] private float movementSpeed = 5f;
+    [SerializeField] private float jumpForce = 5f;
+    [SerializeField] private float gravity = 9.81f;
     private float resetSpeed;
 
     private CharacterController controller;
@@ -47,7 +47,7 @@ public class PlayerController : MonoBehaviour
         controller.Move(transform.right * horizontalInput * movementSpeed * Time.deltaTime);
 
         // Rotate player with mouse movment
-        float h = 3.0f * Input.GetAxis("Mouse X");
+        float h = 2.0f * Input.GetAxis("Mouse X");
         transform.Rotate(0, h, 0);
 
         // Check if player is grounded and the jump key is pressed
