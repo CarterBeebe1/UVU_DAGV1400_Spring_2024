@@ -8,9 +8,10 @@ using UnityEngine;
 public class PlayerController : MonoBehaviour
 {
     // Variables
-    public float movementSpeed = 5f;
+    public float movementSpeed = 1f;
     public float jumpForce = 5f;
     private float gravity = 9.81f;
+    private float resetSpeed;
 
     private CharacterController controller;
     private Vector3 moveDirection;
@@ -21,10 +22,7 @@ public class PlayerController : MonoBehaviour
     void Start()
     {
         controller = GetComponent<CharacterController>();
-
-        // Set target fps and vsync
-        QualitySettings.vSyncCount = 1;
-        Application.targetFrameRate = 60;
+        resetSpeed = movementSpeed;
     }
 
     // Update is called once per frame
@@ -37,11 +35,11 @@ public class PlayerController : MonoBehaviour
         // Sprint when the left control Key is pressed
         if (Input.GetKeyDown(KeyCode.LeftControl))
         {
-            movementSpeed = movementSpeed * 1.8f;
+            movementSpeed = movementSpeed * 1.6f;
         }
         if (Input.GetKeyUp(KeyCode.LeftControl))
         {
-            movementSpeed = 5;
+            movementSpeed = resetSpeed;
         }
 
         // Move player at movementSeed based on vertical and horizontal input
