@@ -1,22 +1,21 @@
 using System.Collections;
 using System.Collections.Generic;
-using Unity.VisualScripting;
-using Unity.VisualScripting.FullSerializer;
-using UnityEditor;
+using System.Runtime.CompilerServices;
 using UnityEngine;
 
 public class PlayerController : MonoBehaviour
 {
-    // Variables
-    [SerializeField] private float movementSpeed = 5f;
-    [SerializeField] private float jumpForce = 5f;
-    [SerializeField] private float gravity = 9.81f;
-    private float resetSpeed;
+      // Variables
+    public float movementSpeed = 5f;
+    public float jumpForce = 5f;
+    public float gravity = 9.81f;
 
-    private CharacterController controller;
     private Vector3 moveDirection;
     private bool isJumping;
     private bool grounded;
+    private bool isCrouching;
+    private float resetSpeed;
+    private CharacterController controller;
 
     // Start is called before the first frame update
     void Start()
@@ -32,14 +31,24 @@ public class PlayerController : MonoBehaviour
         float horizontalInput = Input.GetAxis("Horizontal");
         float verticalInput = Input.GetAxis("Vertical");
 
-        // Sprint when the left control Key is pressed
+        // Sprint when the left shift Key is pressed
+        if (Input.GetKeyDown(KeyCode.LeftShift))
+        {
+            movementSpeed = 8f;
+        }
         if (Input.GetKeyDown(KeyCode.LeftControl))
         {
-            movementSpeed = movementSpeed * 1.6f;
+            movementSpeed = 3f;
+            isCrouching = true;
+        }
+        if (Input.GetKeyUp(KeyCode.LeftShift))
+        {
+            movementSpeed = resetSpeed;
         }
         if (Input.GetKeyUp(KeyCode.LeftControl))
         {
             movementSpeed = resetSpeed;
+            isCrouching = false;
         }
 
         // Move player at movementSeed based on vertical and horizontal input
@@ -47,7 +56,7 @@ public class PlayerController : MonoBehaviour
         controller.Move(transform.right * horizontalInput * movementSpeed * Time.deltaTime);
 
         // Rotate player with mouse movment
-        float h = 2.0f * Input.GetAxis("Mouse X");
+        float h = 3.0f * Input.GetAxis("Mouse X");
         transform.Rotate(0, h, 0);
 
         // Check if player is grounded and the jump key is pressed
@@ -57,19 +66,19 @@ public class PlayerController : MonoBehaviour
         }
 
         // Apply jump force if true
-        if (isJumping && grounded)
+        if (isJumping && grounded && isCrouching == false)
         {
             moveDirection.y = jumpForce;
             isJumping = false;
             grounded = false;
         }
 
-        // Crouch when the left shift key is pressed
-        if (Input.GetKeyDown(KeyCode.LeftShift))
+        // Crouch when the left control key is pressed
+        if (Input.GetKeyDown(KeyCode.LeftControl))
         {
             controller.height = 1.2f;
         }
-        if (Input.GetKeyUp(KeyCode.LeftShift))
+        if (Input.GetKeyUp(KeyCode.LeftControl))
         {
             controller.height = 2f;
         }
