@@ -1,11 +1,19 @@
+/*
+Description:
+This script allows the player to move the character and rotate it using the mouse.
+It also allows the player to crouch, jump, and sprint.
+*/
+
 using System.Collections;
 using System.Collections.Generic;
 using System.Runtime.CompilerServices;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class PlayerController : MonoBehaviour
 {
-      // Variables
+    // Player control function parameters
+    private CharacterController controller;
     public float movementSpeed = 5f;
     public float jumpForce = 5f;
     public float gravity = 9.81f;
@@ -15,7 +23,28 @@ public class PlayerController : MonoBehaviour
     private bool grounded;
     private bool isCrouching;
     private float resetSpeed;
-    private CharacterController controller;
+
+    // Stamina main parameters
+    public float playerStamina = 100.0f;
+    [SerializeField] private float maxStamina = 100.0f;
+    [SerializeField] private float jumpCost = 20;
+    [HideInInspector] private bool hasRegenerated = true;
+    [HideInInspector] private bool weAreSpriniting = false;
+
+    // Stamina regen parameters
+    [Range(0, 50)] [SerializeField] private float staminaDrain = 0.5f;
+    [Range(0, 50)] [SerializeField] private float staminaRegen = 0.5f;
+
+    // Stamina speed parameters
+    [SerializeField] private int slowedRunSpeed = 5f;
+    [SerializeField] private int normalRunSpeed = 8f;
+
+    //Stamina UI Elements
+    [SerializeField] private Image staminaProgressUI = null;
+    [SerializeField] private CanvasGroup sliderCanvasGroup = null;
+
+    private FirstPersonControllerCustom PlayerController;
+
 
     // Start is called before the first frame update
     void Start()
@@ -31,11 +60,33 @@ public class PlayerController : MonoBehaviour
         float horizontalInput = Input.GetAxis("Horizontal");
         float verticalInput = Input.GetAxis("Vertical");
 
-        // Sprint when the left shift Key is pressed
+        // Sprint when the left shift Key is pressed and elapseTime > 0
         if (Input.GetKeyDown(KeyCode.LeftShift))
         {
-            movementSpeed = 8f;
+            if (elapseTime == 0)
+            {
+                tired = true;
+            }
+            if (elapseTime > 0 && tired == false)
+            {
+                elapseTime = -60;
+                movementSpeed = resetSpeed;
+            }
+            if (elapseTime < 0)
+            {
+                movementSpeed = 8f;
+            }
         }
+
+        // Add one to elapseTime to track how long its been
+        elapseTime = elapseTime + 1;
+
+        //When player becomes tired and elapseTime is set to 0, wait 120 updates before setting tired to false
+        if (elapseTime == 120)
+        {
+            tired = false;
+        }
+
         if (Input.GetKeyDown(KeyCode.LeftControl))
         {
             movementSpeed = 3f;
@@ -62,11 +113,14 @@ public class PlayerController : MonoBehaviour
         // Check if player is grounded and the jump key is pressed
         if (Input.GetButtonDown("Jump"))
         {
-            isJumping = true;
+            if (isCrouching == false)
+            {
+                isJumping = true;
+            }
         }
 
         // Apply jump force if true
-        if (isJumping && grounded && isCrouching == false)
+        if (isJumping && grounded)
         {
             moveDirection.y = jumpForce;
             isJumping = false;
