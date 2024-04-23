@@ -14,43 +14,31 @@ public class PlayerController : MonoBehaviour
 {
     // Player control function parameters
     private CharacterController controller;
-    public float movementSpeed = 5f;
-    public float jumpForce = 5f;
-    public float gravity = 9.81f;
+    [SerializeField] private float movementSpeed = 5f;
+    [SerializeField] private float sprintSpeed = 8f;
+    [SerializeField] private float jumpForce = 5f;
+    [SerializeField] private float gravity = 9.81f;
 
     private Vector3 moveDirection;
     private bool isJumping;
     private bool grounded;
     private bool isCrouching;
+    private bool isSprinting = false;
     private float resetSpeed;
-
-    // Stamina main parameters
-    public float playerStamina = 100.0f;
-    [SerializeField] private float maxStamina = 100.0f;
-    [SerializeField] private float jumpCost = 20;
-    [HideInInspector] private bool hasRegenerated = true;
-    [HideInInspector] private bool weAreSpriniting = false;
-
-    // Stamina regen parameters
-    [Range(0, 50)] [SerializeField] private float staminaDrain = 0.5f;
-    [Range(0, 50)] [SerializeField] private float staminaRegen = 0.5f;
-
-    // Stamina speed parameters
-    [SerializeField] private int slowedRunSpeed = 5f;
-    [SerializeField] private int normalRunSpeed = 8f;
-
-    //Stamina UI Elements
-    [SerializeField] private Image staminaProgressUI = null;
-    [SerializeField] private CanvasGroup sliderCanvasGroup = null;
-
-    private FirstPersonControllerCustom PlayerController;
-
+    [HideInInspector] public StaminaController _staminaController;
 
     // Start is called before the first frame update
     void Start()
     {
+        _staminaController = GetComponent<StaminaController>();
         controller = GetComponent<CharacterController>();
         resetSpeed = movementSpeed;
+    }
+    
+    // Sets player movement speed based on value in StaminaController
+    public void SetRunSpeed(float speed)
+    {
+        movementSpeed = speed;
     }
 
     // Update is called once per frame
@@ -63,39 +51,45 @@ public class PlayerController : MonoBehaviour
         // Sprint when the left shift Key is pressed and elapseTime > 0
         if (Input.GetKeyDown(KeyCode.LeftShift))
         {
-            if (elapseTime == 0)
+            movementSpeed = sprintSpeed;
+            if (verticalInput != 0 || horizontalInput != 0)
             {
-                tired = true;
-            }
-            if (elapseTime > 0 && tired == false)
-            {
-                elapseTime = -60;
-                movementSpeed = resetSpeed;
-            }
-            if (elapseTime < 0)
-            {
-                movementSpeed = 8f;
+                isSprinting = true;
             }
         }
 
-        // Add one to elapseTime to track how long its been
-        elapseTime = elapseTime + 1;
-
-        //When player becomes tired and elapseTime is set to 0, wait 120 updates before setting tired to false
-        if (elapseTime == 120)
+        // Check if player is sprinting and activate sprinting function in StaminaController script if true
+        if (_staminaController.playerStamina > 0 && isSprinting)
         {
-            tired = false;
+            _staminaController.weAreSpriniting = true;
+            _staminaController.Sprinting();
         }
-
+        
+        // Set movement speed to 3 if crouching
         if (Input.GetKeyDown(KeyCode.LeftControl))
         {
             movementSpeed = 3f;
             isCrouching = true;
         }
+
+        // If player releases left shift key set sprinting values to false and set movment speed to normal
         if (Input.GetKeyUp(KeyCode.LeftShift))
         {
             movementSpeed = resetSpeed;
+            isSprinting = false;
+            _staminaController.weAreSpriniting = false;
         }
+
+        // If player is not sprinting and stamina is greater than 0, set weAreSprinting to false
+        if (!isSprinting)
+        {
+            if(_staminaController.playerStamina > 0)
+            {
+                _staminaController.weAreSpriniting = false;
+            }
+        }
+
+        // Set movment speed to normal after crouching and set isCrouching to false.
         if (Input.GetKeyUp(KeyCode.LeftControl))
         {
             movementSpeed = resetSpeed;
