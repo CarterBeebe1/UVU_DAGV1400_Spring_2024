@@ -78,6 +78,7 @@ public class StaminaController : MonoBehaviour
             playerStamina -= staminaDrain * Time.deltaTime;
             UpdateStamina(1);
 
+            // If player stamina is out of stamina, set to walk speed and remove stamina bar
             if(playerStamina <= 0)
             {
                 hasRegenerated = false;
