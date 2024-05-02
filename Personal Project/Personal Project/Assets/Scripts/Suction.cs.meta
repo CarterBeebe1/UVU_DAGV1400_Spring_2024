@@ -3,7 +3,10 @@ guid: d74aa035a2862294186b184103e600c6
 MonoImporter:
   externalObjects: {}
   serializedVersion: 2
-  defaultReferences: []
+  defaultReferences:
+  - vaccum: {instanceID: 0}
+  - self: {instanceID: 0}
+  - moneySound: {fileID: 8300000, guid: 0efa036419854ed47866b404a159cdc4, type: 3}
   executionOrder: 0
   icon: {instanceID: 0}
   userData: 
