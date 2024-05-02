@@ -31,7 +31,7 @@ public class Enemy : MonoBehaviour
 
         // Add force toward look direction
             enemyRb.AddForce(lookDirection * speed);
-            playerSound.PlayOneShot(boingSound, 1.0f);
+            //playerSound.PlayOneShot(boingSound, 1.0f);
 
         // Destroy enemy if it falls off world
         if (transform.position.y < -10)

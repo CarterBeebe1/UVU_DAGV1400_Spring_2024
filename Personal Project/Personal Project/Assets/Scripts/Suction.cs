@@ -18,7 +18,7 @@ public class Suction : MonoBehaviour
 
     //Sound
     public AudioClip moneySound;
-    private AudioSource DissapearAudio;
+    public AudioSource CoconutAudio;
 
 
     // Start is called before the first frame update
@@ -53,8 +53,8 @@ public class Suction : MonoBehaviour
 
         if (destroyDistance)
         {
+            CoconutAudio.PlayOneShot(moneySound, 1.0f);
             Destroy(gameObject);
-            DissapearAudio.PlayOneShot(moneySound, 1.0f);
         }
 
         // Destroy orb if it falls off the world
